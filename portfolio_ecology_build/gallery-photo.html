@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Photography — Andrei Bobariu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Junicode:ital,wght@0,400;0,700;1,400;1,700&family=Space+Grotesk:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--bg:#0c100d;--white:#eae6d8;--gray:#7a8472;--olive:#6a8a50;--border:#1e2419;}
+body{background:var(--bg);color:var(--white);font-family:'Space Grotesk',sans-serif;font-weight:300;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");pointer-events:none;z-index:8000;mix-blend-mode:overlay;}
+nav{display:flex;justify-content:space-between;align-items:center;padding:2rem 3rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:100;}
+.back{font-size:0.58rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gray);text-decoration:none;transition:color 0.3s;}
+.back:hover{color:var(--olive);}
+.nav-title{font-family:'Junicode',serif;font-weight:700;font-size:1rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--white);}
+
+/* HERO */
+.gallery-hero{padding:6rem 3rem 4rem;}
+.gallery-eyebrow{font-size:0.52rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--olive);margin-bottom:1.5rem;display:flex;align-items:center;gap:1.2rem;}
+.gallery-eyebrow::before{content:'';width:28px;height:1px;background:var(--olive);}
+.gallery-title{font-family:'Junicode',serif;font-weight:700;font-size:clamp(3rem,7vw,8rem);text-transform:uppercase;line-height:0.88;color:var(--white);}
+
+/* GRID */
+.photo-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:2px;
+  background:var(--border);
+  padding:0 0 2px;
+}
+.photo-item{
+  background:var(--bg);
+  position:relative;
+  overflow:hidden;
+  cursor:pointer;
+  aspect-ratio:2/3;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.photo-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.6s cubic-bezier(.23,1,.32,1);}
+.photo-item:hover img{transform:scale(1.04);}
+
+/* placeholder for empty slots */
+.photo-placeholder{
+  width:100%;height:100%;
+  background:linear-gradient(135deg,#0e1410 0%,#111a12 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:0.8rem;
+  opacity:0.4;
+}
+.photo-placeholder span{font-size:0.5rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--olive);}
+
+/* CAPTION OVERLAY */
+.photo-caption{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:1.5rem;
+  background:linear-gradient(transparent,rgba(8,12,8,0.85));
+  opacity:0;transition:opacity 0.3s;
+}
+.photo-item:hover .photo-caption{opacity:1;}
+.caption-title{font-family:'Junicode',serif;font-size:0.9rem;color:var(--white);margin-bottom:0.3rem;}
+.caption-meta{font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gray);}
+
+/* LIGHTBOX */
+#lightbox{
+  position:fixed;inset:0;background:rgba(8,12,8,0.96);
+  z-index:9000;display:none;
+  align-items:center;justify-content:center;flex-direction:column;
+}
+#lightbox.open{display:flex;}
+#lightbox img{max-height:85vh;max-width:90vw;object-fit:contain;}
+#lightbox-close{
+  position:absolute;top:2rem;right:2rem;
+  font-size:0.58rem;letter-spacing:0.25em;text-transform:uppercase;
+  color:var(--gray);cursor:pointer;background:none;border:none;
+}
+#lightbox-close:hover{color:var(--white);}
+
+footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify-content:space-between;margin-top:4rem;}
+footer span{font-size:0.5rem;letter-spacing:0.15em;color:var(--gray);text-transform:uppercase;}
+
+/* ECOLOGY LAYER */
+#ecosystem{
+position:fixed; inset:0; overflow:hidden; pointer-events:none;
+z-index:-1;
+background:
+linear-gradient(180deg,#0c100d 0%, #10150f 50%, #151b13 100%);
+}
+#ecosystem canvas{position:absolute; inset:0; width:100%; height:100%;}
+.ruin{
+position:fixed;
+border:1px solid rgba(180,190,150,.12);
+opacity:.18;
+filter:blur(1px);
+}
+.gallery-hero,.photo-grid,.painting-grid,footer,nav{
+position:relative;
+z-index:2;
+}
+.photo-grid,.painting-grid{
+backdrop-filter: blur(1px);
+}
+body::before{opacity:.03!important;}
+
+</style>
+</head>
+<body>
+
+<div id="ecosystem"><canvas id="eco"></canvas></div>
+<script>
+const c=document.getElementById('eco');
+const ctx=c.getContext('2d');
+function rs(){c.width=innerWidth;c.height=innerHeight}
+addEventListener('resize',rs); rs();
+
+const vines=[...Array(800)].map(()=>({
+x:Math.random(),
+y:Math.random()*1.3,
+h:40+Math.random()*260,
+d:.4+Math.random()*4,
+p:Math.random()*6.28
+}));
+
+function draw(t){
+ctx.fillStyle='#10150f';
+ctx.fillRect(0,0,c.width,c.height);
+
+for(let i=0;i<8;i++){
+ctx.fillStyle='rgba(180,210,150,.02)';
+ctx.beginPath();
+ctx.ellipse(
+Math.random()*c.width,
+Math.random()*c.height,
+120+Math.random()*200,
+40+Math.random()*100,
+0,0,Math.PI*2
+);
+ctx.fill();
+}
+
+for(const v of vines){
+const x=v.x*c.width;
+const y=v.y*c.height - scrollY*(0.05/v.d);
+const sway=Math.sin(t*0.00035/v.d+v.p)*(5/v.d);
+ctx.strokeStyle=`rgba(${40+30/v.d},${70+30/v.d},40,${0.08+0.15/v.d})`;
+ctx.lineWidth=Math.max(.5,2/v.d);
+ctx.beginPath();
+ctx.moveTo(x,y);
+ctx.quadraticCurveTo(x+sway,y-v.h*.4,x+sway*2,y-v.h);
+ctx.stroke();
+}
+requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+</script>
+
+<nav style="display:flex;justify-content:space-between;align-items:center;padding:1.5rem 2.8rem;position:sticky;top:0;z-index:200;mix-blend-mode:difference;">
+  <a href="portfolio.html" style="font-size:0.52rem;letter-spacing:0.28em;text-transform:uppercase;color:#eae6d8;text-decoration:none;opacity:0.65;transition:opacity 0.2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.65">← Back</a>
+  <a href="portfolio.html" style="font-family:'Junicode',serif;font-weight:700;font-size:0.72rem;letter-spacing:0.22em;text-transform:uppercase;color:#eae6d8;text-decoration:none;">AB</a>
+</nav>
+
+<header class="gallery-hero">
+  <div class="gallery-eyebrow">Photography</div>
+  <h1 class="gallery-title">Photo<br>graphy</h1>
+</header>
+
+<main class="photo-grid">
+  <!-- Add photos here: replace .photo-placeholder with actual img tags -->
+  <!-- Format: <div class="photo-item">
+                 <img src="your-photo.jpg" alt="Title">
+                 <div class="photo-caption">
+                   <div class="caption-title">Title</div>
+                   <div class="caption-meta">Location · Year</div>
+                 </div>
+               </div> -->
+
+  <!-- PLACEHOLDERS (delete when adding real photos) -->
+  <div class="photo-item"><img src="images/trails-visual.jpg" alt="work"></div>
+  <div class="photo-item"><img src="images/trails-visual.jpg" alt="work"></div>
+  <div class="photo-item"><img src="images/trails-visual.jpg" alt="work"></div>
+  <div class="photo-item"><img src="images/trails-visual.jpg" alt="work"></div>
+  <div class="photo-item"><img src="images/trails-visual.jpg" alt="work"></div>
+  <div class="photo-item"><img src="images/trails-visual.jpg" alt="work"></div>
+  <div class="photo-item"><img src="images/trails-visual.jpg" alt="work"></div>
+  <div class="photo-item"><img src="images/trails-visual.jpg" alt="work"></div>
+  <div class="photo-item"><img src="images/trails-visual.jpg" alt="work"></div>
+</main>
+
+<!-- Lightbox -->
+<div id="lightbox">
+  <button id="lightbox-close" onclick="closeLightbox()">✕ Close</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<footer>
+  <span>© 2025 Andrei Bobariu</span>
+  <span>Photography</span>
+  <span>All rights reserved</span>
+</footer>
+
+<script>
+function openLightbox(src) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+}
+document.querySelectorAll('.photo-item img').forEach(img => {
+  img.addEventListener('click', () => openLightbox(img.src));
+});
+document.getElementById('lightbox').addEventListener('click', e => {
+  if(e.target === e.currentTarget) closeLightbox();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Gigabyte — Andrei Bobariu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Junicode:ital,wght@0,400;0,700;1,400;1,700&family=Space+Grotesk:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{--bg:#0c100d;--white:#eae6d8;--gray:#7a8472;--olive:#c87858;--border:rgba(234,230,216,0.09);}
+body{background:var(--bg);color:var(--white);font-family:'Space Grotesk',sans-serif;font-weight:300;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background-image:url("images/noise-overlay.svg");pointer-events:none;z-index:8000;mix-blend-mode:overlay;opacity:0.55;}
+nav{display:flex;justify-content:space-between;align-items:center;padding:1.5rem 2.8rem;position:sticky;top:0;z-index:200;mix-blend-mode:difference;}
+.back{font-size:0.52rem;letter-spacing:0.28em;text-transform:uppercase;color:#eae6d8;text-decoration:none;opacity:0.65;transition:opacity 0.2s;}
+.back:hover{opacity:1;}
+.nav-title{font-family:'Junicode',serif;font-weight:700;font-size:0.72rem;letter-spacing:0.22em;text-transform:uppercase;color:#eae6d8;text-decoration:none;}
+.hero-proj{padding:8rem 2.8rem 5rem;border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:end;}
+.hero-left{}
+.proj-eyebrow{font-size:0.5rem;letter-spacing:0.38em;text-transform:uppercase;color:var(--olive);margin-bottom:2rem;display:flex;align-items:center;gap:1rem;}
+.proj-eyebrow::before{content:'';width:24px;height:1px;background:var(--olive);}
+.proj-title{font-family:'Junicode',serif;font-weight:700;font-size:clamp(3rem,7vw,7rem);text-transform:uppercase;line-height:0.88;}
+.hero-cover{aspect-ratio:3/4;border:1px solid var(--border);overflow:hidden;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0e1410,#111a12);}
+.hero-cover img{width:100%;height:100%;object-fit:cover;}
+.hero-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;opacity:0.3;font-size:0.48rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--olive);}
+.proj-body{padding:7rem 2.8rem;}
+.proj-meta-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--border);margin-bottom:5rem;}
+.meta-item{padding:1.5rem 0;border-right:1px solid var(--border);}
+.meta-item:last-child{border-right:none;}
+.meta-item:nth-child(n+2){padding-left:2rem;}
+.meta-label{font-size:0.45rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gray);margin-bottom:0.4rem;}
+.meta-value{font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--white);}
+.proj-desc{font-size:0.68rem;color:var(--gray);line-height:2.4;max-width:64ch;margin-bottom:5rem;}
+.gallery-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);}
+.gallery-item{background:var(--bg);aspect-ratio:3/4;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.gallery-item.wide{aspect-ratio:4/3;grid-column:span 2;}
+.gallery-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.8rem;background:linear-gradient(135deg,#0e1410,#111a12);}
+.gallery-placeholder .label{font-size:0.48rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--olive);opacity:0.5;}
+.gallery-placeholder .num{font-family:'Junicode',serif;font-size:3rem;color:var(--olive);opacity:0.12;}
+.gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform 0.6s cubic-bezier(.23,1,.32,1);}
+.gallery-item:hover img{transform:scale(1.04);}
+.ext-link{display:inline-block;margin-top:3rem;font-size:0.5rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--olive);text-decoration:none;border-bottom:1px solid var(--border);padding-bottom:2px;transition:border-color 0.2s;}
+.ext-link:hover{border-color:var(--olive);}
+footer{border-top:1px solid var(--border);padding:1.8rem 2.8rem;display:flex;justify-content:space-between;margin-top:4rem;}
+footer span{font-size:0.46rem;letter-spacing:0.15em;color:var(--gray);text-transform:uppercase;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="back">← Back</a>
+  <a href="index.html" class="nav-title">AB</a>
+</nav>
+<header class="hero-proj">
+  <div class="hero-left">
+    <p class="proj-eyebrow">Publication · Issue Two</p>
+    <h1 class="proj-title">Giga<br>byte</h1>
+  </div>
+  <div class="hero-cover">
+    <img src="images/gigabyte-cover.jpg" alt="Gigabyte">
+  </div>
+</header>
+<main class="proj-body">
+  <div class="proj-meta-grid">
+    <div class="meta-item"><div class="meta-label">Role</div><div class="meta-value">Author & Art Direction</div></div>
+    <div class="meta-item"><div class="meta-label">Format</div><div class="meta-value">Self-published · Ebook</div></div>
+    <div class="meta-item"><div class="meta-label">Year</div><div class="meta-value">2024</div></div>
+  </div>
+  <p class="proj-desc">The companion issue to 0.1. Two numbers developed simultaneously, received in dialogue with each other. Prioritising independence and expression over profit. Part of "Coalescence" — a project about holding two things at once.</p>
+  <a href="https://www.amazon.com/GIGABYTE-PROTOTYPE-ZINE-Book-2-ebook/dp/B0DGHYKRTD" target="_blank" class="ext-link">View on Amazon →</a>
+  <div class="gallery-grid">
+    <div class="gallery-item wide"><img src="images/gigabyte-spread-01.jpg" alt="Spread pp. 40–41"></div>
+    <div class="gallery-item wide"><img src="images/gigabyte-spread-02.jpg" alt="I Fall into the Void"></div>
+    <div class="gallery-item wide"><img src="images/gigabyte-spread-05.png" alt="The Matress — pp. 54–55"></div>
+    <div class="gallery-item wide"><img src="images/gigabyte-spread-06.png" alt="Last Day — pink spread"></div>
+    <div class="gallery-item wide"><img src="images/gigabyte-spread-03.jpg" alt="Spread pp. 34–35"></div>
+    <div class="gallery-item wide"><img src="images/gigabyte-spread-07.png" alt="Autopsy poem — pp. 50–51"></div>
+    <div class="gallery-item wide"><img src="images/gigabyte-spread-08.png" alt="Monologue — pp. 62–63"></div>
+    <div class="gallery-item wide"><img src="images/gigabyte-spread-04.jpg" alt="Contents — metro map"></div>
+  </div>
+</main>
+<footer>
+  <span>© 2025 Andrei Bobariu</span>
+  <span>Gigabyte</span>
+  <span>Self-published · Author & Art Direction</span>
+</footer>
+</body>
+</html>
