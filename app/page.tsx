@@ -1,0 +1,1 @@
+export default function Page(){return <main><h1>Ecology Facility</h1><p>Nature inherited the machine.</p></main>}
